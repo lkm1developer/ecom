@@ -9,8 +9,10 @@ Home Page setup with catalogue directory:
 ## Lesson 2. 
 
 Redux setup to show product
+
 =======================
 ### New Terms 
+
 Provider => to provide redux state to react app
 
 Store=> redux store with all reducers or component level store
@@ -18,6 +20,7 @@ Store=> redux store with all reducers or component level store
 ConfigureStore
 =======================
 ### New Hooks:
+
 useSelectore=> to select a state from redux store
 useDispatch => to update state in redux store
 =======================
