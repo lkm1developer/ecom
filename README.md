@@ -12,7 +12,9 @@ Redux setup to show product
 =======================
 ### New Terms 
 Provider => to provide redux state to react app
+
 Store=> redux store with all reducers or component level store
+
 ConfigureStore
 =======================
 ### New Hooks:
@@ -21,6 +23,7 @@ useDispatch => to update state in redux store
 =======================
 #### New Libraries 
 "react-redux"
+
 "@reduxjs/toolkit"
 
 ## Lesson 3.  use of useDispatch and update redux state
