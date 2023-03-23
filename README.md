@@ -36,3 +36,5 @@ toggle my cart popup on click the cart icon by updating redux state by dispatchi
 add id to cart icon  `data-testid="cart-icon"` for testing
 
 ## Lesson 4.  Cart 
+
+add `<span data-testid="cart-total">{ total }</span>` for testing in checkout page
