@@ -48,6 +48,30 @@ test('Toggle cart popup', async () => {
   const icon=screen.getByTestId('cart-icon', {suggest: false})
   expect(icon).toBeInTheDocument();
   await userEvent.click(icon)
-  const mycart = screen.getByText(/My Cart/i);
+  const mycart = screen.getByText(/Your cart is empty./i);
   expect(mycart).toBeInTheDocument();
+});
+
+
+test('Add Item to cart', async () => {
+  render(<ReduxApp />)
+  const home = screen.getByText(/Home/i);
+  expect(home).toBeInTheDocument();
+  await userEvent.click(home)
+  const hats = screen.getByText(/HATS/i);
+  expect(hats).toBeInTheDocument();
+  await userEvent.click(hats)
+  const firstProduct =screen.getByText(/Brown Brim/i)
+  expect(firstProduct).toBeInTheDocument()
+  await userEvent.hover(firstProduct)
+  const addToCartButton =screen.getAllByText(/ADD TO CART/i)
+  expect(addToCartButton[0]).toBeInTheDocument()
+  await userEvent.click(addToCartButton[0])
+  await userEvent.click(addToCartButton[0])
+  await userEvent.click(addToCartButton[0])
+  const icon=screen.getByTestId('item-count', {suggest: false})
+  expect(icon).toBeInTheDocument();
+  
+  expect(icon.textContent).toBe("3");
+
 });
