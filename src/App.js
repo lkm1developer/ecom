@@ -6,6 +6,7 @@ import Header from './components/Header';
 import Homepage from './pages/Homepage';
 import CollectionsOverview from './components/collections-overview/collections-overview.component';
 import CollectionPage from './pages/Collection';
+import Checkout from './pages/checkout';
 
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
         <Routes>
           <Route path='shop/:collectionId' element={<CollectionPage />} />
           <Route path="shop" element={<CollectionsOverview />} />
+          <Route path="checkout" element={<Checkout />} />
           <Route path="/" index element={<Homepage />} />
         </Routes>
       
