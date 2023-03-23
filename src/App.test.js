@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor,act, } from '@testing-library/react';
 import userEvent from '@testing-library/user-event'
 import App from './App';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom'
@@ -113,5 +113,14 @@ test('Add Item to cart', async () => {
   expect(total).toBeInTheDocument();
   
   expect(total.textContent).toBe("186");
+
+});
+jest.setTimeout(30000);
+test('Payment', async () => {
+  render(<ReduxApp />)
+  const payNow =screen.getByText(/Pay Now/i)
+  expect(payNow).toBeInTheDocument();
+  const a =await userEvent.click(payNow)
+  
 
 });
