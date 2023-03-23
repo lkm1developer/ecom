@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 
 
 test('Homepage categories Test', () => {
-  render(<App />, { wrapper: BrowserRouter })
+  render(<ReduxApp />)
   const hats = screen.getByText(/HATS/i);
   expect(hats).toBeInTheDocument();
   const jackets = screen.getByText(/JACKETS/i);
@@ -41,4 +41,13 @@ test('Navigation and Redux Test', async () => {
   await userEvent.click(jackets)
   const GreyJeanJacket = screen.getByText(/Grey Jean Jacket/i);
   expect(GreyJeanJacket).toBeInTheDocument();
+});
+
+test('Toggle cart popup', async () => {
+  render(<ReduxApp />)
+  const icon=screen.getByTestId('cart-icon', {suggest: false})
+  expect(icon).toBeInTheDocument();
+  await userEvent.click(icon)
+  const mycart = screen.getByText(/My Cart/i);
+  expect(mycart).toBeInTheDocument();
 });

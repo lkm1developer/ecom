@@ -15,6 +15,7 @@ const Header = () => {
         <Logo className="logo" />
       </Link>
       <div className="options">
+        <Link className="option" to="/">Home</Link>
         <Link className="option" to="/shop">SHOP</Link>
         <Link className="option" to="/contact">CONTACT</Link>
         <CartIcon />

@@ -32,3 +32,5 @@ useDispatch => to update state in redux store
 ## Lesson 3.  use of useDispatch and update redux state
 
 toggle my cart popup on click the cart icon by updating redux state by dispatching an action
+
+add id to cart icon  `data-testid="cart-icon"` for testing
