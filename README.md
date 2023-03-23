@@ -30,3 +30,5 @@ useDispatch => to update state in redux store
 "@reduxjs/toolkit"
 
 ## Lesson 3.  use of useDispatch and update redux state
+
+toggle my cart popup on click the cart icon by updating redux state by dispatching an action
