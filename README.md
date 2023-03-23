@@ -10,15 +10,17 @@ Home Page setup with catalogue directory:
 
 Redux setup to show product
 =======================
-New Terms 
+### New Terms 
 Provider => to provide redux state to react app
 Store=> redux store with all reducers or component level store
 ConfigureStore
 =======================
-New Hooks:
+### New Hooks:
 useSelectore=> to select a state from redux store
 useDispatch => to update state in redux store
 =======================
-New Libraries 
+#### New Libraries 
 "react-redux"
 "@reduxjs/toolkit"
+
+## Lesson 3.  use of useDispatch and update redux state
