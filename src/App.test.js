@@ -75,3 +75,43 @@ test('Add Item to cart', async () => {
   expect(icon.textContent).toBe("3");
 
 });
+test('Add Item to cart', async () => {
+  render(<ReduxApp />)
+  const home = screen.getByText(/Home/i);
+  expect(home).toBeInTheDocument();
+  await userEvent.click(home)
+  const hats = screen.getByText(/HATS/i);
+  expect(hats).toBeInTheDocument();
+  await userEvent.click(hats)
+
+  const firstProduct =screen.getByText(/Wolf Cap/i)
+  expect(firstProduct).toBeInTheDocument()
+  await userEvent.hover(firstProduct)
+  const addToCartButton =screen.getAllByText(/ADD TO CART/i)
+  expect(addToCartButton[0]).toBeInTheDocument()
+  await userEvent.click(addToCartButton[0])
+  await userEvent.click(addToCartButton[0])
+  await userEvent.click(addToCartButton[0])
+
+  const secondProduct =screen.getByText(/Blue Beanie/i)
+  expect(secondProduct).toBeInTheDocument()
+  expect(addToCartButton[1]).toBeInTheDocument()
+  await userEvent.click(addToCartButton[1])
+  await userEvent.click(addToCartButton[1])
+
+
+  
+  const icon=screen.getByTestId('item-count', {suggest: false})
+  expect(icon).toBeInTheDocument();
+  
+  expect(icon.textContent).toBe("8");
+
+  const checkout =screen.getByText(/GO TO CHECKOUT/i)
+  expect(checkout).toBeInTheDocument();
+  await userEvent.click(checkout)
+  const total=screen.getByTestId('cart-total', {suggest: false})
+  expect(total).toBeInTheDocument();
+  
+  expect(total.textContent).toBe("186");
+
+});
