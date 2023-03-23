@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import Header from './components/Header';
 import Homepage from './pages/Homepage';
@@ -12,14 +12,13 @@ const App = () => {
 
   return (
     <div style={{margin:'0px 100px'}}>
-      <BrowserRouter>
         <Header />
         <Routes>
           <Route path='shop/:collectionId' element={<CollectionPage />} />
           <Route path="shop" element={<CollectionsOverview />} />
           <Route path="/" index element={<Homepage />} />
         </Routes>
-      </BrowserRouter>
+      
     </div>
   );
 }
