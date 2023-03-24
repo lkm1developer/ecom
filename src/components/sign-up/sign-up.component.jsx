@@ -58,6 +58,7 @@ const SignUp = () => {
           value={name}
           onChange={handleChange}
           label="Display Name"
+          placeholder="Display Name"
           required
         />
         <FormInput
@@ -66,6 +67,7 @@ const SignUp = () => {
           value={email}
           onChange={handleChange}
           label="Email"
+          placeholder="Email"
           required
         />
         <FormInput
@@ -74,6 +76,7 @@ const SignUp = () => {
           value={password}
           onChange={handleChange}
           label="Password"
+          placeholder="Password"
           required
         />
       

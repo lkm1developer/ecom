@@ -12,10 +12,11 @@ const  SignIn =()=> {
   const [email, setEmail]=useState('')
   const [password, setPassword]=useState('')
   const dispatch = useDispatch()
-  const {loading, error}=useSelector((state)=>state.user)
+  const {loading, error, currentUser}=useSelector((state)=>state.user)
 
   const handleSubmit = async event => {
     event.preventDefault();
+   
     try {
       dispatch(login({email, password}))
       // await auth.signInWithEmailAndPassword(email, password);
@@ -47,6 +48,7 @@ const  SignIn =()=> {
             handleChange={handleChange} 
             value={email} 
             label="Email" 
+            placeholder="Email" 
             required />
           <FormInput 
             name="password" 
@@ -54,6 +56,7 @@ const  SignIn =()=> {
             handleChange={handleChange} 
             value={password} 
             label="Password" 
+            placeholder="Password" 
             required />
           <div className="buttons">
             <CustomButton type="submit">Sign In</CustomButton>

@@ -124,3 +124,59 @@ test('Payment', async () => {
   
 
 });
+function hasInputValue(e, inputValue) {
+  return screen.getByDisplayValue(inputValue) === e
+}
+test('Authentication', async () => {
+  render(<ReduxApp />)
+  const loginBtn =screen.getByText(/Sign In/i)
+  expect(loginBtn).toBeInTheDocument();
+  await userEvent.click(loginBtn)
+
+  await act(async () => {
+    await new Promise((r) => setTimeout(r, 2000));
+  })
+  
+  expect(screen.getByText('I do not have a account')).toBeTruthy()
+  const signupBtn =screen.getByText(/SIGN UP/i, { selector: 'button' })
+  expect(signupBtn).toBeInTheDocument();
+  
+
+  const name =screen.getAllByPlaceholderText('Display Name');
+  expect(name[0]).toBeInTheDocument();
+  
+  const email =screen.getAllByPlaceholderText('Email');
+  expect(email[1]).toBeInTheDocument();
+  const password =screen.getAllByPlaceholderText('Password');
+  expect(password[1]).toBeInTheDocument();
+  fireEvent.change(name[0], { target: { value: 'Developer' } })
+  // expect(hasInputValue(name[0], "Developer")).toBe(true)
+  fireEvent.change(email[1], { target: { value: 'developer@mail.com' } })
+  // expect(hasInputValue(email[1], "developer@mail.com")).toBe(true)
+  fireEvent.change(password[1], { target: { value: 'Password1' } })
+  // expect(hasInputValue(password[1], "Password1")).toBe(true)
+  await userEvent.click(signupBtn)
+  await act(async () => {
+    await waitFor(() => expect(screen.getByText('loading...')).toBeTruthy())
+    await new Promise((r) => setTimeout(r, 6000));
+  })
+  const errorMsg =screen.getByText(/Email already taken/i);
+  expect(errorMsg).toBeInTheDocument();
+
+  fireEvent.change(email[0], { target: { value: 'developer@mail.com' } })
+  // expect(hasInputValue(email[0], "developer@mail.com")).toBe(true)
+  fireEvent.change(password[0], { target: { value: 'Password1' } })
+  // expect(hasInputValue(password[0], "Password1")).toBe(true)
+  const loginBtn2 =screen.getByText(/Sign In/i, { selector: 'button' })
+  expect(loginBtn2).toBeInTheDocument();
+  await userEvent.click(loginBtn2)
+  await act(async () => {
+    await waitFor(() => expect(screen.getByText('loading...')).toBeTruthy())
+    await new Promise((r) => setTimeout(r, 6000));
+  })
+  const userName =screen.getByText(/Sign Out/i);
+  expect(userName).toBeInTheDocument();
+
+  
+
+});
