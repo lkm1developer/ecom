@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import './header.styles.scss';
-import { ReactComponent as Logo } from './../../assets/crown.svg';
+
 import CartIcon from './../cart-icon/cart-icon.component';
 import CartDropdown from './../cart-dropdown/cart-dropdown.component';
 import { useSelector } from 'react-redux';
@@ -12,7 +12,7 @@ const Header = () => {
   return (
     <div className="header">
       <Link className="logo-container" to="/">
-        <Logo className="logo" />
+      <img src="/logo.png" alt="logo" width="100px" />
       </Link>
       <div className="options">
         <Link className="option" to="/">Home</Link>
