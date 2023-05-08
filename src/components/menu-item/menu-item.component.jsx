@@ -1,9 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 
-import './menu-item.styles.scss';
+// import './menu-item.styles.scss';
 
-const MenuItem = ({title, imageUrl, size, linkUrl}) => {
+const MenuItem = ({item}) => {
+	const {title, imageUrl, size, linkUrl}=item
 	const navigate =useNavigate()
 
 	const handleClick =()=>{
