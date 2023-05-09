@@ -34,7 +34,7 @@ export function login(payload) {
       dispatch(setLoading(true))
       dispatch(setError(null))
       try {
-          const { data } = await axios.post(`http://localhost:9009/v1/auth/login`,payload)
+          const { data } = await axios.post(`http://43.205.49.108:9009/v1/auth/login`,payload)
           dispatch(setLoading(false))
           if (!data) {
             dispatch(setError(data?.message ?? 'something went wrong'))
@@ -52,7 +52,7 @@ export function signup(payload) {
       dispatch(setLoadingSignup(true))
       dispatch(setErrorSignup(null))
       try {
-          const { data } = await axios.post(`http://localhost:9009/v1/auth/register`,payload)
+          const { data } = await axios.post(`http://43.205.49.108:9009/v1/auth/register`,payload)
           dispatch(setLoadingSignup(false))
           if (!data) {
             dispatch(setError(data?.message ?? 'something went wrong'))

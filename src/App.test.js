@@ -4,10 +4,16 @@ import App from './App';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom'
 import { store } from './redux/store'
 import { Provider } from 'react-redux';
+import { renderWithProviders } from "./utils-for-tests";
 
+const NApp = () => (
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+)
 
 test('Homepage categories Test', () => {
-  render(<ReduxApp />)
+  renderWithProviders(<NApp />);
   const hats = screen.getByText(/HATS/i);
   expect(hats).toBeInTheDocument();
   const jackets = screen.getByText(/JACKETS/i);
@@ -18,16 +24,10 @@ test('Homepage categories Test', () => {
   expect(womens).toBeInTheDocument();
 });
 
-const ReduxApp = () => (
-  <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Provider>
-)
+
 
 test('Navigation and Redux Test', async () => {
-  render(<ReduxApp />)
+  renderWithProviders(<NApp />);
   const hats = screen.getByText(/HATS/i);
   expect(hats).toBeInTheDocument();
   await userEvent.click(hats)
@@ -44,7 +44,7 @@ test('Navigation and Redux Test', async () => {
 });
 
 test('Toggle cart popup', async () => {
-  render(<ReduxApp />)
+  renderWithProviders(<NApp />);
   const icon=screen.getByTestId('cart-icon', {suggest: false})
   expect(icon).toBeInTheDocument();
   await userEvent.click(icon)
@@ -54,7 +54,7 @@ test('Toggle cart popup', async () => {
 
 
 test('Add Item to cart', async () => {
-  render(<ReduxApp />)
+  renderWithProviders(<NApp />);
   const home = screen.getByText(/Home/i);
   expect(home).toBeInTheDocument();
   await userEvent.click(home)
@@ -75,8 +75,8 @@ test('Add Item to cart', async () => {
   expect(icon.textContent).toBe("3");
 
 });
-test('Add Item to cart', async () => {
-  render(<ReduxApp />)
+test('GO TO CHECKOUT', async () => {
+  renderWithProviders(<NApp />);
   const home = screen.getByText(/Home/i);
   expect(home).toBeInTheDocument();
   await userEvent.click(home)
@@ -103,38 +103,38 @@ test('Add Item to cart', async () => {
   
   const icon=screen.getByTestId('item-count', {suggest: false})
   expect(icon).toBeInTheDocument();
-  
-  expect(icon.textContent).toBe("8");
-
+ 
+  expect(icon.textContent).toBe("5");
+  await userEvent.click(icon)
   const checkout =screen.getByText(/GO TO CHECKOUT/i)
   expect(checkout).toBeInTheDocument();
   await userEvent.click(checkout)
   const total=screen.getByTestId('cart-total', {suggest: false})
   expect(total).toBeInTheDocument();
   
-  expect(total.textContent).toBe("186");
+  expect(total.textContent).toBe("111");
 
 });
-jest.setTimeout(30000);
+
 test('Payment', async () => {
-  render(<ReduxApp />)
+  renderWithProviders(<NApp />);
   const payNow =screen.getByText(/Pay Now/i)
   expect(payNow).toBeInTheDocument();
-  const a =await userEvent.click(payNow)
+  userEvent.click(payNow)
   
 
 });
 function hasInputValue(e, inputValue) {
   return screen.getByDisplayValue(inputValue) === e
 }
-test('Authentication', async () => {
-  render(<ReduxApp />)
+test('check login/signup btn', async () => {
+  renderWithProviders(<NApp />);
   const loginBtn =screen.getByText(/Sign In/i)
   expect(loginBtn).toBeInTheDocument();
   await userEvent.click(loginBtn)
 
   await act(async () => {
-    await new Promise((r) => setTimeout(r, 2000));
+    await new Promise((r) => setTimeout(r, 200));
   })
   
   expect(screen.getByText('I do not have a account')).toBeTruthy()
@@ -149,34 +149,73 @@ test('Authentication', async () => {
   expect(email[1]).toBeInTheDocument();
   const password =screen.getAllByPlaceholderText('Password');
   expect(password[1]).toBeInTheDocument();
+  
+
+  
+
+});
+test('duplicate signup', async () => {
+  renderWithProviders(<NApp />);
+  const loginBtn =screen.findAllByText(/Sign In/i)
+  if(loginBtn && loginBtn.length==1){
+    expect(loginBtn[0]).toBeInTheDocument();
+    await userEvent.click(loginBtn[0])
+  
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 500));
+    })
+  } else{
+    //already on login page
+  }
+  
+  
+ 
+  const signupBtn =screen.getByText(/SIGN UP/i, { selector: 'button' })
+
+  const name =screen.getAllByPlaceholderText('Display Name');
+  
+  const email =screen.getAllByPlaceholderText('Email');
+  expect(email[1]).toBeInTheDocument();
+  const password =screen.getAllByPlaceholderText('Password');
+  expect(password[1]).toBeInTheDocument();
   fireEvent.change(name[0], { target: { value: 'Developer' } })
-  // expect(hasInputValue(name[0], "Developer")).toBe(true)
   fireEvent.change(email[1], { target: { value: 'developer@mail.com' } })
-  // expect(hasInputValue(email[1], "developer@mail.com")).toBe(true)
   fireEvent.change(password[1], { target: { value: 'Password1' } })
-  // expect(hasInputValue(password[1], "Password1")).toBe(true)
   await userEvent.click(signupBtn)
   await act(async () => {
     await waitFor(() => expect(screen.getByText('loading...')).toBeTruthy())
-    await new Promise((r) => setTimeout(r, 6000));
+    await new Promise((r) => setTimeout(r, 3000));
   })
   const errorMsg =screen.getByText(/Email already taken/i);
   expect(errorMsg).toBeInTheDocument();
 
+  
+
+});
+test('login', async () => {
+  renderWithProviders(<NApp />);
+  const loginBtn =screen.findAllByText(/Sign In/i)
+  if(loginBtn && loginBtn.length==1){
+    expect(loginBtn[0]).toBeInTheDocument();
+    await userEvent.click(loginBtn[0])
+  
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 500));
+    })
+  } else{
+    //already on login page
+  }
+  const email =screen.getAllByPlaceholderText('Email');
+  const password =screen.getAllByPlaceholderText('Password');
   fireEvent.change(email[0], { target: { value: 'developer@mail.com' } })
-  // expect(hasInputValue(email[0], "developer@mail.com")).toBe(true)
   fireEvent.change(password[0], { target: { value: 'Password1' } })
-  // expect(hasInputValue(password[0], "Password1")).toBe(true)
   const loginBtn2 =screen.getByText(/Sign In/i, { selector: 'button' })
   expect(loginBtn2).toBeInTheDocument();
   await userEvent.click(loginBtn2)
   await act(async () => {
     await waitFor(() => expect(screen.getByText('loading...')).toBeTruthy())
-    await new Promise((r) => setTimeout(r, 6000));
+    await new Promise((r) => setTimeout(r, 2000));
   })
   const userName =screen.getByText(/Sign Out/i);
   expect(userName).toBeInTheDocument();
-
-  
-
 });
