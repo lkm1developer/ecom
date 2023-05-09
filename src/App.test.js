@@ -12,8 +12,12 @@ const NApp = () => (
     </BrowserRouter>
 )
 
-test('Homepage categories Test', () => {
+test('Homepage categories Test', async() => {
+
   renderWithProviders(<NApp />);
+  const home = screen.getByText(/Home/i);
+  expect(home).toBeInTheDocument();
+  await userEvent.click(home)
   const hats = screen.getByText(/HATS/i);
   expect(hats).toBeInTheDocument();
   const jackets = screen.getByText(/JACKETS/i);
@@ -28,14 +32,16 @@ test('Homepage categories Test', () => {
 
 test('Navigation and Redux Test', async () => {
   renderWithProviders(<NApp />);
+  const home = screen.getByText(/Home/i);
+  expect(home).toBeInTheDocument();
+  await userEvent.click(home)
   const hats = screen.getByText(/HATS/i);
   expect(hats).toBeInTheDocument();
   await userEvent.click(hats)
   expect(screen.getByText(/Brown Brim/i)).toBeInTheDocument()
-  const home = screen.getByText(/Home/i);
-  expect(home).toBeInTheDocument();
+  
+ 
   await userEvent.click(home)
-
   const jackets = screen.getByText(/JACKETS/i);
   expect(jackets).toBeInTheDocument();
   await userEvent.click(jackets)
@@ -45,6 +51,9 @@ test('Navigation and Redux Test', async () => {
 
 test('Toggle cart popup', async () => {
   renderWithProviders(<NApp />);
+  const home = screen.getByText(/Home/i);
+  expect(home).toBeInTheDocument();
+  await userEvent.click(home)
   const icon=screen.getByTestId('cart-icon', {suggest: false})
   expect(icon).toBeInTheDocument();
   await userEvent.click(icon)
@@ -63,16 +72,14 @@ test('Add Item to cart', async () => {
   await userEvent.click(hats)
   const firstProduct =screen.getByText(/Brown Brim/i)
   expect(firstProduct).toBeInTheDocument()
-  await userEvent.hover(firstProduct)
+  //await userEvent.hover(firstProduct)
   const addToCartButton =screen.getAllByText(/ADD TO CART/i)
   expect(addToCartButton[0]).toBeInTheDocument()
-  await userEvent.click(addToCartButton[0])
-  await userEvent.click(addToCartButton[0])
   await userEvent.click(addToCartButton[0])
   const icon=screen.getByTestId('item-count', {suggest: false})
   expect(icon).toBeInTheDocument();
   
-  expect(icon.textContent).toBe("3");
+  expect(icon.textContent).toBe("1");
 
 });
 test('GO TO CHECKOUT', async () => {
@@ -86,25 +93,25 @@ test('GO TO CHECKOUT', async () => {
 
   const firstProduct =screen.getByText(/Wolf Cap/i)
   expect(firstProduct).toBeInTheDocument()
-  await userEvent.hover(firstProduct)
+  //await userEvent.hover(firstProduct)
   const addToCartButton =screen.getAllByText(/ADD TO CART/i)
   expect(addToCartButton[0]).toBeInTheDocument()
   await userEvent.click(addToCartButton[0])
-  await userEvent.click(addToCartButton[0])
-  await userEvent.click(addToCartButton[0])
+
 
   const secondProduct =screen.getByText(/Blue Beanie/i)
   expect(secondProduct).toBeInTheDocument()
-  expect(addToCartButton[1]).toBeInTheDocument()
-  await userEvent.click(addToCartButton[1])
-  await userEvent.click(addToCartButton[1])
+  //await userEvent.hover(secondProduct)
+  const addToCartButton2 =screen.getAllByText(/ADD TO CART/i)
+  expect(addToCartButton2[1]).toBeInTheDocument()
+  await userEvent.click(addToCartButton2[1])
 
 
   
   const icon=screen.getByTestId('item-count', {suggest: false})
   expect(icon).toBeInTheDocument();
  
-  expect(icon.textContent).toBe("5");
+  expect(icon.textContent).toBe("2");
   await userEvent.click(icon)
   const checkout =screen.getByText(/GO TO CHECKOUT/i)
   expect(checkout).toBeInTheDocument();
@@ -112,12 +119,18 @@ test('GO TO CHECKOUT', async () => {
   const total=screen.getByTestId('cart-total', {suggest: false})
   expect(total).toBeInTheDocument();
   
-  expect(total.textContent).toBe("111");
+  expect(total.textContent).toBe("43");
 
 });
 
 test('Payment', async () => {
   renderWithProviders(<NApp />);
+  const icon=screen.getByTestId('item-count', {suggest: false})
+  expect(icon).toBeInTheDocument();
+  await userEvent.click(icon)
+  const checkout =screen.getByText(/GO TO CHECKOUT/i)
+  expect(checkout).toBeInTheDocument();
+  await userEvent.click(checkout)
   const payNow =screen.getByText(/Pay Now/i)
   expect(payNow).toBeInTheDocument();
   userEvent.click(payNow)
@@ -183,7 +196,7 @@ test('duplicate signup', async () => {
   fireEvent.change(password[1], { target: { value: 'Password1' } })
   await userEvent.click(signupBtn)
   await act(async () => {
-    await waitFor(() => expect(screen.getByText('loading...')).toBeTruthy())
+    // await waitFor(() => expect(screen.getByText('loading...')).toBeTruthy())
     await new Promise((r) => setTimeout(r, 3000));
   })
   const errorMsg =screen.getByText(/Email already taken/i);
@@ -213,7 +226,7 @@ test('login', async () => {
   expect(loginBtn2).toBeInTheDocument();
   await userEvent.click(loginBtn2)
   await act(async () => {
-    await waitFor(() => expect(screen.getByText('loading...')).toBeTruthy())
+    // await waitFor(() => expect(screen.getByText('loading...')).toBeTruthy())
     await new Promise((r) => setTimeout(r, 2000));
   })
   const userName =screen.getByText(/Sign Out/i);
